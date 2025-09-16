@@ -248,20 +248,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         async function fetchWishes() {
             try {
-                // Giả lập API trả về lời chúc để test
-                // Trong thực tế, bạn sẽ dùng fetch như cũ
-                const mockWishes = [
-                    { name: 'Minh Anh', message: 'Chúc hai bạn trăm năm hạnh phúc!' },
-                    { name: 'Bảo Trâm', message: 'Happy Wedding! Chúc mừng hạnh phúc hai bạn nhé.' },
-                    { name: 'Gia Hân', message: 'Chúc mừng đám cưới của hai bạn, sớm có quý tử nha.' },
-                    { name: 'Tuấn Kiệt', message: 'Chúc mừng hạnh phúc, tình yêu của hai bạn thật đáng ngưỡng mộ.' },
-                    { name: 'Phương Thảo', message: 'Chúc mừng ngày trọng đại, chúc hai bạn mãi yêu thương nhau.' },
-                    { name: 'Hoàng Long', message: 'Chúc mừng hạnh phúc nhé! Bữa tiệc thật tuyệt vời.' }
-                ];
-                allWishes = mockWishes;
-                // const response = await fetch('/api/get-wishes');
-                // if (!response.ok) return;
-                // allWishes = await response.json();
+                const response = await fetch('/api/get-wishes');
+                if (!response.ok) return;
+                allWishes = await response.json();
             } catch (error) {
                 console.error("Không thể tải lời chúc:", error);
             }
