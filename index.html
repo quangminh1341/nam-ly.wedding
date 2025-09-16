@@ -14,9 +14,19 @@
 <body>
 
     <div class="mobile-frame">
+        
+        <div id="wish-stream-container"></div>
+
         <div class="screen">
 
+            <div id="volume-control">
+                <svg id="icon-unmuted" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+                <svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="display: none;" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"></path></svg>
+            </div>
+
             <div id="intro-container">
+                <img src="images/thiep.gif" alt="Thiệp mời" class="intro-top-image">
+                
                 <div class="envelope-wrapper">
                     <div class="invitation-card">
                         <p class="title">Thiệp Cưới</p>
@@ -28,6 +38,7 @@
                         <div class="wax-seal"></div>
                     </div>
                 </div>
+                <img src="images/thiep-2.png" alt="Trang trí" class="intro-bottom-image">
             </div>
             
             <main id="main-content" style="visibility: hidden; opacity: 0;">
@@ -35,18 +46,49 @@
                     <img src="images/tn-tiec-cuoi.webp" alt="Ảnh bìa" class="cover-image">
                     <div class="cover-overlay"></div>
                     <div class="cover-content">
-                        <h1 class="cover-title">Happy Wedding</h1>
+                        <h1 class="cover-title">THIỆP CƯỚI</h1>
                         <p class="cover-names">Mạnh Nam & Hương Ly</p>
                         <p class="cover-date">12.10.2025</p>
+                        <p class="cover-date">(Tức ngày 21.08.2025 âm lịch)</p>
                     </div>
                     <div class="scroll-down">↓</div>
+                </section>
+                
+                <section class="section family">
+                    <div class="family-background"></div>
+                    <img src="images/long-den.png" alt="Lồng đèn" class="family-lantern">
+                    <div class="family-info-container">
+                        <div class="family-card groom-family">
+                            <h2>Nhà Trai</h2>
+                            <p>Ông Tô Mạnh Hùng</p>
+                            <p>Bà Lương Thị Việt</p>
+                        </div>
+                        <div class="family-card bride-family">
+                            <h2>Nhà Gái</h2>
+                            <p>Ông Dương Ngọc Quyết</p>
+                            <p>Bà Trần Thị Liên</p>
+                        </div>
+                    </div>
                 </section>
 
                 <section class="section invitation">
                     <h2 class="section-title animate-title">Trân Trọng Báo Tin</h2>
-                    <p class="animate-text">
-                        Sau một thời gian tìm hiểu và yêu thương, chúng tôi vô cùng hạnh phúc thông báo rằng đám cưới của chúng tôi sẽ sớm được tổ chức. Sự hiện diện của bạn là món quà quý giá nhất.
-                    </p>
+                    <p class="animate-text">Sau một thời gian tìm hiểu và yêu thương, chúng tôi vô cùng hạnh phúc thông báo rằng đám cưới của cô dâu và chú rẻ sẽ sớm được tổ chức. Sự hiện diện của bạn là món quà quý giá nhất.</p>
+                </section>
+
+                <section class="section wedding-party">
+                    <h2 class="section-title animate-title">Trân Trọng Kính Mời</h2>
+                    <p class="animate-text">Mọi người đến chung vui cùng gia đình chúng tôi trong buổi tiệc cưới được tổ chức</p>
+                    
+                    <div class="party-time-container animate-text">
+                        <h3>Vào lúc</h3>
+                        <div class="party-date">
+                            <div class="time-item">17 giờ 00</div>
+                            <div class="day-item">12</div>
+                            <div class="year-item">Tháng 10<br>Năm 2025</div>
+                        </div>
+                        <p class="lunar-date">(Tức ngày 21 tháng 08 năm Ất Tỵ)</p>
+                    </div>
                 </section>
 
                 <section class="section couple">
@@ -64,35 +106,30 @@
                         </div>
                     </div>
                 </section>
-
                 <section class="section event">
                     <h2 class="section-title animate-title">Thông Tin Hôn Lễ</h2>
                     <div class="event-details">
                         <div class="event-card animate-text">
-                            <h3>Lễ Thành Hôn</h3>
-                            <p>Vào lúc 09:00 - Thứ Bảy</p>
+                            <h3>Lễ Ăn Hỏi</h3>
+                            <p>Vào lúc 10:30 - Chủ nhật</p>
                             <p>Ngày 12 tháng 10 năm 2025</p>
-                            <p>Tại tư gia nhà gái</p>
+                            <p>Tại tư gia nhà gái, Xóm 11, Bích Tràng, Tiền Phong, Hưng Yên</p>
                         </div>
                         <div class="event-card animate-text">
                             <h3>Tiệc Cưới</h3>
-                            <p>Vào lúc 18:00 - Thứ Bảy</p>
+                            <p>Vào lúc 17:00 - Chủ nhật</p>
                             <p>Ngày 12 tháng 10 năm 2025</p>
-                            <p>Nhà hàng Thiên Trang 2</p>
+                            <p>Nhà hàng Thiên Trang 2, cách ngã 3 cọc 6 50m về phía Cửa Ông</p>
                         </div>
                     </div>
                 </section>
-
                 <section class="section gallery">
                     <h2 class="section-title animate-title">Khoảnh Khắc Yêu Thương</h2>
                     <div class="gallery-grid">
-                        <div class="gallery-item"><img src="https://via.placeholder.com/200" alt="Ảnh cưới 1"></div>
-                        <div class="gallery-item"><img src="https://via.placeholder.com/200" alt="Ảnh cưới 2"></div>
-                        <div class="gallery-item"><img src="https://via.placeholder.com/200" alt="Ảnh cưới 3"></div>
-                        <div class="gallery-item"><img src="https://via.placeholder.com/200" alt="Ảnh cưới 4"></div>
+                        <div class="gallery-item"><img src="images/Ảnh 1.jpg" alt="Ảnh cưới 1"></div>
+                        <div class="gallery-item"><img src="images/Ảnh 2.jpg" alt="Ảnh cưới 2"></div>
                     </div>
                 </section>
-                
                 <section class="section thank-you">
                     <h2 class="section-title animate-title">Thank You!</h2>
                     <p class="animate-text">Cảm ơn bạn đã dành thời gian cho câu chuyện của chúng tôi.</p>
@@ -100,7 +137,44 @@
             </main>
 
         </div>
+
+        <div class="fab-container">
+            <button id="scrollTopBtn" class="fab-btn" title="Lên đầu trang" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
+            <button id="addWishBtn" class="fab-btn" title="Gửi lời chúc">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+        </div>
+
+        <div id="wishModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal">&times;</button>
+                <h2>Để lại lời chúc của bạn</h2>
+                <form id="wishForm">
+                    <div class="form-group">
+                        <label for="wisherName">Tên của bạn là gì?</label>
+                        <input type="text" id="wisherName" placeholder="Nhập tên của bạn..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wishMessage">Viết lời chúc của bạn ở đây</label>
+                        <textarea id="wishMessage" rows="5" placeholder="Gửi lời chúc tốt đẹp nhất..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Gửi</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="thankYouModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal">&times;</button>
+                <p class="thank-you-message">Cảm ơn bạn đã mang lại ý nghĩa cho ngày vui của chúng tôi. Chúc bạn có một ngày tốt lành!</p>
+            </div>
+        </div>
+
     </div>
+
+    <audio id="background-music" loop src="music/sound.mp3"></audio>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>

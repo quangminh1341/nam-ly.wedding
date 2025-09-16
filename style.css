@@ -43,6 +43,29 @@ body {
     display: none; /* WebKit */
 }
 
+/* THÊM ĐOẠN NÀY ĐỂ STYLE CHO ẢNH MỚI */
+.intro-top-image {
+    position: absolute;
+    top: 0; /* Đặt lại top về 0 để ảnh bám sát viền trên */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%; /* Phóng to chiều rộng lên 100% */
+    max-width: none; /* Bỏ giới hạn max-width để ảnh có thể mở rộng hết cỡ */
+    height: auto; /* Giữ tỷ lệ khung hình */
+    object-fit: contain; /* Đảm bảo ảnh hiển thị đầy đủ, không bị cắt */
+}
+
+/* THÊM CẢ ĐOẠN NÀY NỮA */
+.intro-bottom-image {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: none;
+    z-index: 1; /* Đảm bảo ảnh dưới nằm dưới phong bì */
+}
+
 /* =================== PHẦN HIỆU ỨNG MỞ BÀI (ĐÃ THIẾT KẾ LẠI) =================== */
 #intro-container {
     position: absolute;
@@ -66,6 +89,7 @@ body {
     align-items: center;
     cursor: pointer;
     transform: rotate(15deg); /* Hơi xoay sang phải */
+    z-index: 2; /* Đảm bảo phong bì nằm trên ảnh dưới */
 }
 
 /* --- PHONG BÌ --- */
@@ -225,6 +249,94 @@ body {
     60% { transform: translateY(-7px); }
 }
 
+/* =================== PHẦN THÔNG TIN GIA ĐÌNH (MỚI) =================== */
+.family {
+    position: relative;
+    overflow-x: hidden; 
+    /* THAY ĐỔI: Bỏ margin-top và thay bằng padding-top để chứa lồng đèn */
+    padding-top: 180px; 
+    margin-top: 80px;
+}
+
+/* === BẮT ĐẦU: CSS CHO LỒNG ĐÈN === */
+.family-lantern {
+    position: absolute;
+    /* Treo lồng đèn ở phía trên của khu vực padding */
+    top: 20px; 
+    left: 50%;
+    /* Dùng transform để căn giữa chính xác */
+    transform: translateX(-50%); 
+    width: 120px; /* Điều chỉnh kích thước lồng đèn nếu cần */
+    height: auto;
+    /* Đặt gốc xoay ở chính giữa-phía trên của ảnh, đây là điểm mấu chốt cho hiệu ứng */
+    transform-origin: top center;
+    /* Áp dụng animation đã tạo */
+    animation: sway-lantern 4s ease-in-out infinite alternate;
+}
+
+/* Định nghĩa animation đung đưa cho lồng đèn */
+@keyframes sway-lantern {
+    from {
+        /* Bắt đầu bằng cách xoay nhẹ sang trái */
+        transform: translateX(-50%) rotate(-6deg);
+    }
+    to {
+        /* Kết thúc bằng cách xoay nhẹ sang phải */
+        transform: translateX(-50%) rotate(6deg);
+    }
+}
+/* === KẾT THÚC: CSS CHO LỒNG ĐÈN === */
+
+
+.family-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/chu-hi.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15; 
+    z-index: 0;
+}
+
+.family-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.family-card {
+    width: 48%; 
+    text-align: center;
+    background-color: rgba(255, 250, 244, 0.6); 
+    padding: 20px 5px;
+    border-radius: 8px;
+}
+
+.family-card h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #a87b5a;
+    margin-bottom: 15px;
+}
+
+.family-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+/* Trạng thái ban đầu của các khối thông tin để chuẩn bị cho animation */
+.groom-family, .bride-family {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .invitation p {
     font-size: 1rem;
     line-height: 1.7;
@@ -287,4 +399,253 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+}
+
+/* =================== NÚT ĐIỀU KHIỂN ÂM THANH =================== */
+#volume-control {
+    position: absolute;
+    top: 25px; 
+    left: 25px; 
+    width: 32px;
+    height: 32px;
+    z-index: 101; 
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#volume-control svg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(255, 255, 255, 0.7); 
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5));
+}
+
+.wedding-party {
+    background-color: #fdfbf7; /* Thêm màu nền nhẹ để nổi bật */
+}
+
+.wedding-party p {
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 30px auto; /* Thêm margin-bottom để tạo khoảng cách */
+}
+
+.party-time-container {
+    margin-top: 20px;
+}
+
+.party-time-container h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.party-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-family: 'Quicksand', sans-serif;
+    color: #555;
+}
+
+.party-date .time-item,
+.party-date .year-item {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.party-date .day-item {
+    font-size: 4.5rem;
+    font-weight: bold;
+    color: #4a4a4a;
+    padding: 0 20px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.party-time-container .lunar-date {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+}
+
+.fab-container {
+    position: absolute;
+    bottom: 30px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 110;
+}
+
+.fab-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #a87b5a;
+    color: white;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.fab-btn:hover {
+    background-color: #8e6545;
+    transform: scale(1.1);
+}
+
+.fab-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* =================== CỬA SỔ (MODAL) =================== */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* Ẩn mặc định */
+    justify-content: center;
+    align-items: center;
+    z-index: 120;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: #fffaf4;
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 350px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: modal-appear 0.4s ease-out;
+}
+
+@keyframes modal-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.modal-content h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #a87b5a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    background-color: #fdfbf7;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #a87b5a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #8e6545;
+}
+
+.thank-you-message {
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #4a4a4a;
+}
+
+/* =================== DÒNG LỜI CHÚC CHẠY NGANG =================== */
+#wish-stream-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Đặt nó ở lớp nền, dưới nội dung chính */
+    overflow: hidden; /* Ẩn các thẻ khi chúng ở ngoài màn hình */
+    pointer-events: none; /* RẤT QUAN TRỌNG: Cho phép click xuyên qua */
+}
+
+.wish-card {
+    position: absolute;
+    right: 0; /* Bắt đầu từ bên phải */
+    transform: translateX(100%); /* Di chuyển nó ra khỏi màn hình ban đầu */
+    background-color: rgba(168, 123, 90, 0.1); /* Màu rất nhạt */
+    padding: 8px 15px;
+    border-radius: 20px;
+    white-space: nowrap; /* Giữ cho thẻ trên một dòng */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.wish-card p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem; /* Cỡ chữ nhỏ */
+    color: #8c8c8c; /* Màu chữ xám */
+}
+
+.wish-card .wisher-name {
+    font-weight: 600;
+    margin-right: 5px;
 }
