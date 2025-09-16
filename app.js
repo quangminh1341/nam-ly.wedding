@@ -141,23 +141,21 @@ document.addEventListener("DOMContentLoaded", function() {
                     .to('.bride-family', { xPercent: 0, opacity: 1, duration: 1, ease: 'power2.out' }, '<');
         }
 
-        // === BẮT ĐẦU ĐOẠN MÃ MỚI CHO HIỆU ỨNG ẢNH ===
         const galleryItems = document.querySelectorAll('.gallery-item');
         if (galleryItems.length > 0) {
             gsap.from(galleryItems, {
                 scrollTrigger: {
-                    trigger: '.gallery-grid', // Kích hoạt khi lưới ảnh vào tầm nhìn
+                    trigger: '.gallery-grid',
                     start: 'top 85%',
                     toggleActions: 'play reverse play reverse'
                 },
                 opacity: 0,
-                scale: 0.5, // Bắt đầu từ kích thước nhỏ
+                scale: 0.5,
                 duration: 0.8,
-                ease: 'back.out(1.7)', // Hiệu ứng nảy ra
-                stagger: 0.3 // Độ trễ giữa các ảnh
+                ease: 'back.out(1.7)',
+                stagger: 0.3
             });
         }
-        // === KẾT THÚC ĐOẠN MÃ MỚI ===
     }
 
     // ==============================================================
@@ -237,28 +235,45 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function initWishStream() {
         const wishStreamContainer = document.getElementById('wish-stream-container');
+        if (!wishStreamContainer) return;
+
         let allWishes = [];
+        const COOLDOWN = 30 * 1000; // Thời gian hồi chiêu 30 giây
+        let wishCooldowns = new Map(); // Lưu trữ thời gian kết thúc hồi chiêu của mỗi lời chúc
+
+        // Hàm tạo key định danh duy nhất cho một lời chúc
+        function getWishKey(wish) {
+            return `${wish.name}|${wish.message}`;
+        }
 
         async function fetchWishes() {
             try {
-                const response = await fetch('/api/get-wishes');
-                if (!response.ok) return;
-                allWishes = await response.json();
+                // Giả lập API trả về lời chúc để test
+                // Trong thực tế, bạn sẽ dùng fetch như cũ
+                const mockWishes = [
+                    { name: 'Minh Anh', message: 'Chúc hai bạn trăm năm hạnh phúc!' },
+                    { name: 'Bảo Trâm', message: 'Happy Wedding! Chúc mừng hạnh phúc hai bạn nhé.' },
+                    { name: 'Gia Hân', message: 'Chúc mừng đám cưới của hai bạn, sớm có quý tử nha.' },
+                    { name: 'Tuấn Kiệt', message: 'Chúc mừng hạnh phúc, tình yêu của hai bạn thật đáng ngưỡng mộ.' },
+                    { name: 'Phương Thảo', message: 'Chúc mừng ngày trọng đại, chúc hai bạn mãi yêu thương nhau.' },
+                    { name: 'Hoàng Long', message: 'Chúc mừng hạnh phúc nhé! Bữa tiệc thật tuyệt vời.' }
+                ];
+                allWishes = mockWishes;
+                // const response = await fetch('/api/get-wishes');
+                // if (!response.ok) return;
+                // allWishes = await response.json();
             } catch (error) {
                 console.error("Không thể tải lời chúc:", error);
             }
         }
 
-        function showRandomWish() {
-            if (allWishes.length === 0 || !wishStreamContainer) return;
-
-            const randomWish = allWishes[Math.floor(Math.random() * allWishes.length)];
+        // Hàm chỉ để hiển thị một lời chúc lên màn hình
+        function displayWish(wish) {
             const card = document.createElement('div');
             card.className = 'wish-card';
-            card.innerHTML = `<p><span class="wisher-name">${randomWish.name}:</span>${randomWish.message}</p>`;
+            card.innerHTML = `<p><span class="wisher-name">${wish.name}:</span>${wish.message}</p>`;
             
-            // Đặt vị trí Y ngẫu nhiên, đảm bảo không trùng lặp quá nhiều
-            const randomTop = Math.random() * 70 + 15;
+            const randomTop = Math.random() * 70 + 15; // Vị trí Y ngẫu nhiên
             card.style.top = `${randomTop}%`;
             wishStreamContainer.appendChild(card);
 
@@ -267,35 +282,61 @@ document.addEventListener("DOMContentLoaded", function() {
                 x: `-${wishStreamContainer.offsetWidth + card.offsetWidth + 20}px`,
                 duration: randomDuration,
                 ease: 'none',
-                onComplete: () => card.remove() // Xóa thẻ khỏi DOM khi chạy xong
+                onComplete: () => card.remove()
             });
         }
 
-        // *** BẮT ĐẦU THAY ĐỔI ***
-        // Hàm mới để hiển thị một đợt gồm nhiều lời chúc
+        // Hàm chọn các lời chúc không trùng lặp và chưa bị hồi chiêu
+        function selectWishesForBatch() {
+            const now = Date.now();
+            
+            // 1. Lọc ra những lời chúc có sẵn (không trong thời gian hồi chiêu)
+            const availableWishes = allWishes.filter(wish => {
+                const key = getWishKey(wish);
+                const cooldownEndTime = wishCooldowns.get(key);
+                // Lời chúc có sẵn nếu nó không có trong map hoặc thời gian hồi chiêu đã kết thúc
+                return !cooldownEndTime || now >= cooldownEndTime;
+            });
+
+            // 2. Xáo trộn danh sách lời chúc có sẵn để lấy ngẫu nhiên
+            for (let i = availableWishes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [availableWishes[i], availableWishes[j]] = [availableWishes[j], availableWishes[i]];
+            }
+
+            // 3. Quyết định số lượng (2 hoặc 3) và lấy ra các lời chúc
+            const batchSize = Math.min(availableWishes.length, Math.floor(Math.random() * 2) + 2);
+            const selectedWishes = availableWishes.slice(0, batchSize);
+
+            // 4. Đặt thời gian hồi chiêu cho những lời chúc vừa được chọn
+            selectedWishes.forEach(wish => {
+                const key = getWishKey(wish);
+                wishCooldowns.set(key, now + COOLDOWN);
+            });
+
+            return selectedWishes;
+        }
+
+        // Hàm chính để hiển thị một đợt lời chúc
         function showWishBatch() {
             if (allWishes.length === 0) return;
+            
+            const wishesToShow = selectWishesForBatch();
 
-            // Số lượng lời chúc trong đợt này (ngẫu nhiên 2 hoặc 3)
-            const batchSize = Math.floor(Math.random() * 2) + 2; 
-
-            for (let i = 0; i < batchSize; i++) {
-                // Thêm một độ trễ nhỏ cho mỗi lời chúc để chúng không xuất hiện cùng lúc
-                // và không bị xếp chồng lên nhau
+            // Hiển thị từng lời chúc với độ trễ để chúng không xuất hiện cùng lúc
+            wishesToShow.forEach((wish, i) => {
                 setTimeout(() => {
-                    showRandomWish();
-                }, i * 800); // Ví dụ: lời chúc thứ 2 xuất hiện sau 800ms, thứ 3 sau 1600ms
-            }
+                    displayWish(wish);
+                }, i * 900); // Mỗi lời chúc cách nhau 900ms
+            });
         }
-        // *** KẾT THÚC THAY ĐỔI ***
-
 
         fetchWishes().then(() => {
             if (allWishes.length > 0) {
-                // Hiển thị đợt đầu tiên ngay lập tức
+                // Hiển thị đợt đầu tiên ngay
                 showWishBatch();
                 
-                // Lặp lại việc hiển thị mỗi đợt sau 4-5 giây
+                // Lặp lại việc hiển thị các đợt tiếp theo sau khoảng 4-5 giây
                 setInterval(showWishBatch, 4000 + Math.random() * 1000); 
             }
         });
