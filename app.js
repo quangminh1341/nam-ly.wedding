@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function() {
             wishesToShow.forEach((wish, i) => {
                 setTimeout(() => {
                     displayWish(wish);
-                }, i * 900); // Mỗi lời chúc cách nhau 900ms
+                }, i * 1000); // Mỗi lời chúc cách nhau 900ms
             });
         }
 
@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 showWishBatch();
                 
                 // Lặp lại việc hiển thị các đợt tiếp theo sau khoảng 4-5 giây
-                setInterval(showWishBatch, 4000 + Math.random() * 1000); 
+                setInterval(showWishBatch, 10000 + Math.random() * 1000); 
             }
         });
     }
