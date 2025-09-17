@@ -1,4 +1,29 @@
 document.addEventListener("DOMContentLoaded", function() {
+    function customizeInvitation() {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has('guest')) {
+        const guestId = params.get('guest');
+        try {
+            const guestName = decodeURIComponent(escape(atob(guestId)));
+            const invitationTextElement = document.querySelector('.wedding-party .animate-text');
+            if (invitationTextElement) {
+                invitationTextElement.innerHTML = `Kính mời <span style="font-weight: bold; color: #a87b5a;">${guestName}</span> đến chung vui cùng gia đình chúng tôi trong buổi tiệc cưới được tổ chức`;
+            }
+
+            const metaTitleElement = document.querySelector('meta[property="og:title"]');
+            if (metaTitleElement) {
+                metaTitleElement.setAttribute('content', `Thiệp cưới Nam & Ly | Kính mời ${guestName}`);
+            }
+        } catch (error) {
+            console.error("Lỗi giải mã ID khách mời:", error);
+        }
+    }
+}
+    
+    // Gọi hàm để kiểm tra và tùy chỉnh ngay khi trang được tải
+    customizeInvitation();
+
     gsap.registerPlugin(ScrollTrigger);
 
     // Lấy các phần tử DOM

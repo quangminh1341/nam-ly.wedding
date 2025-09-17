@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #4a4a4a;
+    margin-bottom: 10px;
+}
+
+p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #a87b5a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #8e6545;
+}
+
+#resultTableContainer {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f7f2ed;
+}
+
+td input[type="text"] {
+    width: calc(100% - 85px);
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.copy-btn {
+    width: 75px;
+    padding: 8px;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.copy-btn:disabled {
+    background-color: #28a745;
+    cursor: default;
+    opacity: 0.8;
+}
+
+.checkmark-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    vertical-align: -4px; /* Căn chỉnh icon cho đẹp hơn với dòng chữ */
+}
+
+.checkmark-icon svg {
+    fill: #28a745; /* Màu xanh lá cây */
+}
