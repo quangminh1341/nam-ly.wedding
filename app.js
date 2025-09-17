@@ -262,20 +262,24 @@ document.addEventListener("DOMContentLoaded", function() {
         const wishStreamContainer = document.getElementById('wish-stream-container');
         if (!wishStreamContainer) return;
 
-        let allWishes = [];
-        const COOLDOWN = 30 * 1000; // Thời gian hồi chiêu 30 giây
-        let wishCooldowns = new Map(); // Lưu trữ thời gian kết thúc hồi chiêu của mỗi lời chúc
+        let unseenWishes = []; // Mảng chứa các lời chúc chưa được hiển thị
+        let wishIntervalId = null; // ID của interval để có thể xóa sau này
 
-        // Hàm tạo key định danh duy nhất cho một lời chúc
-        function getWishKey(wish) {
-            return `${wish.name}|${wish.message}`;
+        // Hàm xáo trộn mảng (Fisher-Yates shuffle) để lời chúc xuất hiện ngẫu nhiên
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
 
         async function fetchWishes() {
             try {
                 const response = await fetch('/api/get-wishes');
                 if (!response.ok) return;
-                allWishes = await response.json();
+                const allWishes = await response.json();
+                unseenWishes = [...allWishes]; // Sao chép tất cả lời chúc vào mảng unseenWishes
+                shuffleArray(unseenWishes); // Xáo trộn để thứ tự là ngẫu nhiên
             } catch (error) {
                 console.error("Không thể tải lời chúc:", error);
             }
@@ -299,59 +303,39 @@ document.addEventListener("DOMContentLoaded", function() {
                 onComplete: () => card.remove()
             });
         }
-
-        // Hàm chọn các lời chúc không trùng lặp và chưa bị hồi chiêu
-        function selectWishesForBatch() {
-            const now = Date.now();
-            
-            // 1. Lọc ra những lời chúc có sẵn (không trong thời gian hồi chiêu)
-            const availableWishes = allWishes.filter(wish => {
-                const key = getWishKey(wish);
-                const cooldownEndTime = wishCooldowns.get(key);
-                // Lời chúc có sẵn nếu nó không có trong map hoặc thời gian hồi chiêu đã kết thúc
-                return !cooldownEndTime || now >= cooldownEndTime;
-            });
-
-            // 2. Xáo trộn danh sách lời chúc có sẵn để lấy ngẫu nhiên
-            for (let i = availableWishes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [availableWishes[i], availableWishes[j]] = [availableWishes[j], availableWishes[i]];
-            }
-
-            // 3. Quyết định số lượng (2 hoặc 3) và lấy ra các lời chúc
-            const batchSize = Math.min(availableWishes.length, Math.floor(Math.random() * 2) + 2);
-            const selectedWishes = availableWishes.slice(0, batchSize);
-
-            // 4. Đặt thời gian hồi chiêu cho những lời chúc vừa được chọn
-            selectedWishes.forEach(wish => {
-                const key = getWishKey(wish);
-                wishCooldowns.set(key, now + COOLDOWN);
-            });
-
-            return selectedWishes;
-        }
-
+        
         // Hàm chính để hiển thị một đợt lời chúc
         function showWishBatch() {
-            if (allWishes.length === 0) return;
+            // Nếu không còn lời chúc nào, dừng vòng lặp
+            if (unseenWishes.length === 0) {
+                if (wishIntervalId) {
+                    clearInterval(wishIntervalId);
+                }
+                return;
+            }
             
-            const wishesToShow = selectWishesForBatch();
+            // Quyết định số lượng lời chúc trong đợt này (2 hoặc 3)
+            // Lấy số lượng nhỏ hơn giữa số lời chúc còn lại và số ngẫu nhiên (2 hoặc 3)
+            const batchSize = Math.min(unseenWishes.length, Math.floor(Math.random() * 2) + 2);
+            
+            // Lấy ra một số lời chúc từ đầu mảng và xóa chúng khỏi mảng
+            const wishesToShow = unseenWishes.splice(0, batchSize);
 
             // Hiển thị từng lời chúc với độ trễ để chúng không xuất hiện cùng lúc
             wishesToShow.forEach((wish, i) => {
                 setTimeout(() => {
                     displayWish(wish);
-                }, i * 1000); // Mỗi lời chúc cách nhau 900ms
+                }, i * 1000); // Mỗi lời chúc trong đợt cách nhau 1 giây
             });
         }
 
         fetchWishes().then(() => {
-            if (allWishes.length > 0) {
-                // Hiển thị đợt đầu tiên ngay
+            if (unseenWishes.length > 0) {
+                // Hiển thị đợt đầu tiên ngay lập tức
                 showWishBatch();
                 
-                // Lặp lại việc hiển thị các đợt tiếp theo sau khoảng 4-5 giây
-                setInterval(showWishBatch, 10000 + Math.random() * 1000); 
+                // Lặp lại việc hiển thị các đợt tiếp theo sau mỗi 10 giây
+                wishIntervalId = setInterval(showWishBatch, 10000); 
             }
         });
     }
